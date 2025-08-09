@@ -1,0 +1,25 @@
+# Application configuration for a Spring Boot application using H2 database
+# and running on port 9000.
+# application name: Cards
+
+
+server:
+  port: 9000
+
+spring:
+  application:
+    name: Cards
+
+  datasource:
+    url: jdbc:h2:mem:test
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
