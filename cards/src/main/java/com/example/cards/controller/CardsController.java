@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,12 +23,41 @@ import org.springframework.web.bind.annotation.*;
         description = "CRUD REST APIs in EazyBank to CREATE, UPDATE, FETCH AND DELETE card details"
 )
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api")
 @Validated
 public class CardsController {
 
     private  CardsService cardsService;
+
+    public CardsController(CardsService cardsService) {
+        this.cardsService = cardsService;
+    }
+
+    @Value("${build.version}")
+    private String buildName;
+
+
+    @Operation(
+            summary = "Create Card REST API",
+            description = "REST API to create new Card inside EazyBank"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "HTTP Status CREATED"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildName() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildName);
+    }
 
     @Operation(
             summary = "Create Card REST API",
