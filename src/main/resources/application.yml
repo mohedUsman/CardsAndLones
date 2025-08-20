@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: "configserver"
+  # The native profile is commonly used in Spring Cloud Config Server to indicate that configuration files should be read from the local filesystem rather than a remote Git repository
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "classpath:/config"
+          # This is used to specify the location of the configuration files
+          # The classpath:/config/ will look for files in the src/main/resources/config directory
+
+server:
+  port: 8071
