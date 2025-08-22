@@ -4,6 +4,7 @@ import com.example.cards.constants.CardsConstants;
 import com.example.cards.dto.CardsDto;
 import com.example.cards.dto.ErrorResponseDto;
 import com.example.cards.dto.ResponceDto;
+import com.example.cards.dto.CardsContactInfoDto;
 import com.example.cards.service.CardsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,7 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,8 @@ public class CardsController {
     @Value("${build.version}")
     private String buildName;
 
+    @Autowired
+    private CardsContactInfoDto cardsContactInfoDto;
 
     @Operation(
             summary = "Create Card REST API",
@@ -178,5 +181,21 @@ public class CardsController {
     }
     }
 
-
+    @Operation(
+            summary = "Get Contact Info",
+            description = "In case of any issue You can contact to this details."
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Account created successfully"
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Error occurred while fetching build info"
+    )
+    @GetMapping("/contact-info")
+    public ResponseEntity<CardsContactInfoDto> getContactInfo(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cardsContactInfoDto);
+    }
 }
